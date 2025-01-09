@@ -1,7 +1,7 @@
-def info_pet(name, age):
+def print_info_pet(name, age):
     print(f"My dog {name} is {age} years old.")
 
 
-pet = {"name": "Ultra", "age": 3}
+my_pet = {"name": "Ultra", "age": 3}
 
-info_pet(**pet)
+print_info_pet(**my_pet)
