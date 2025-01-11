@@ -1,4 +1,5 @@
-phrase = "Etiam tincidunt neque erat, quis molestie enim imperdiet vel. Integer urna nisl, facilisis vitae semper at, dignissim vitae libero"
+phrase = ("Etiam tincidunt neque erat, quis molestie enim imperdiet vel."
+          "Integer urna nisl, facilisis vitae semper at, dignissim vitae libero")
 words = phrase.split()
 
 print(words)
