@@ -1,7 +1,10 @@
 
 # Задание 1
 person = ['John', 'Doe', 'New York', '+1372829383739', 'US']
-name, last_name, city, phone, country = person
+try:
+    name, last_name, city, phone, country = person
+except ValueError:
+    print("Error: Added new elements in the list!")
 
 
 # Задание 2
