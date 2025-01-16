@@ -8,8 +8,8 @@ def fibonacci():
     while True:
         yield f1
         old_f1, old_f2 = f1, f2
-        f1 = old_f1 + old_f2
         f2 = f1
+        f1 = old_f1 + old_f2
 
 
 count_list = [5, 200, 1000, 100_000]
