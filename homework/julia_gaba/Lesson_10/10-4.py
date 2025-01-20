@@ -7,8 +7,10 @@ PRICE_LIST = '''тетрадь 50р
 рюкзак 500р'''
 
 split_lines = PRICE_LIST.splitlines()
-price_dict = {x.split()[0]: int(x.split()[1][:-1])
-              for x in split_lines}
+
+split_parts = [x.split() for x in split_lines]
+
+price_dict = {x[0]: int(x[1][:-1]) for x in split_parts}
 
 
 print(price_dict)
