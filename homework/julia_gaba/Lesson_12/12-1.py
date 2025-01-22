@@ -68,10 +68,7 @@ class Bouquet():
         return avg_day_life
 
     def sort_flowers(self, attribute):
-        if not self.flowers:
-            return "Букет пуст."
-
-        if hasattr(self.flowers[0], attribute):
+        if all(map(lambda flower: hasattr(flower, attribute), self.flowers)):
             self.flowers.sort(key=lambda flower: getattr(flower, attribute))
         else:
             return "Неверный критерий сортировки"
