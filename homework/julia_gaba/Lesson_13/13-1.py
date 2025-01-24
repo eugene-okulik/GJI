@@ -31,15 +31,17 @@ with open('hw13-1.py', 'a') as julis_file:
 
         if "на неделю позже" in data_line:
             new_date = date + datetime.timedelta(weeks=1)
-            julis_file.write(str(new_date))
-            print(str(new_date))
+            formatted_date = new_date.strftime(
+                "%Y-%-m-%-d %H:%M:%S.%f")
+            julis_file.write(formatted_date + "\n")
+            print(formatted_date)
 
         if "день недели" in data_line:
             weekday = date.strftime('%A')
-            julis_file.write(str(weekday))
-            print(str(weekday))
+            julis_file.write(weekday + "\n")
+            print(weekday)
 
         if "сколько дней назад" in data_line:
             days_ago = (datetime.datetime.now() - date).days
-            julis_file.write(str(days_ago))
-            print(str(days_ago))
+            julis_file.write(str(days_ago) + "\n")
+            print(days_ago)
