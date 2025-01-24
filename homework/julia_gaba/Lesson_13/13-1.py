@@ -27,8 +27,12 @@ with open('hw13-1.py', 'w') as julis_file:
 
         print(str(date_str))
 
-        date = datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S.%f")
-
+        try:
+            date = datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S.%f")
+        except ValueError as e:
+            print(e)
+            continue
+        
         if "на неделю позже" in data_line:
             new_date = date + datetime.timedelta(weeks=1)
             formatted_date = (
