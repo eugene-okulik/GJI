@@ -8,7 +8,8 @@ homework_path = os.path.dirname(os.path.dirname(base_path))
 print(homework_path)
 
 eugene_file_path = os.path.join(
-    homework_path, 'eugene_okulik', 'hw_13', 'data.txt')
+    homework_path, 'eugene_okulik', 'hw_13', 'data.txt'
+    )
 print(eugene_file_path)
 
 
@@ -20,12 +21,11 @@ def read_file():
 
 with open('hw13-1.py', 'w') as julis_file:
     for data_line in read_file():
-
         start = data_line.find('.') + 1
         end = data_line.find('- ')
         date_str = data_line[start:end].strip()
 
-        print(date_str)
+        print(str(date_str))
 
         date = datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S.%f")
 
@@ -37,8 +37,9 @@ with open('hw13-1.py', 'w') as julis_file:
             )
 
             julis_file.write(formatted_date + "\n")
-            print(formatted_date)
-
+            formatted_date_str = str(formatted_date)
+            print(formatted_date_str)
+            
         if "день недели" in data_line:
             weekday = date.strftime('%A')
             julis_file.write(weekday + "\n")
