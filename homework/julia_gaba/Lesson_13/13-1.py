@@ -19,7 +19,7 @@ def read_file():
             yield line
 
 
-with open('hw13-1.py', 'w') as julis_file:
+with open('hw13-1.txt', 'w') as julis_file:
     for data_line in read_file():
         start = data_line.find('.') + 1
         end = data_line.find('- ')
