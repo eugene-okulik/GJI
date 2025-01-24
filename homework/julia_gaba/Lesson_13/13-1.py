@@ -18,7 +18,7 @@ def read_file():
             yield line
 
 
-with open('hw13-1.py', 'a') as julis_file:
+with open('hw13-1.py', 'w') as julis_file:
     for data_line in read_file():
 
         start = data_line.find('.') + 1
@@ -31,8 +31,8 @@ with open('hw13-1.py', 'a') as julis_file:
 
         if "на неделю позже" in data_line:
             new_date = date + datetime.timedelta(weeks=1)
-            formatted_date = new_date.strftime(
-                "%Y-%-m-%-d %H:%M:%S.%f")
+            formatted_date = f"{new_date.year}-{new_date.month}-{new_date.day} {new_date.strftime('%H:%M:%S.%f')}".rstrip(
+                '0')
             julis_file.write(formatted_date + "\n")
             print(formatted_date)
 
