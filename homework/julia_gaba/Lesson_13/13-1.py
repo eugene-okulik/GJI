@@ -31,8 +31,11 @@ with open('hw13-1.py', 'w') as julis_file:
 
         if "на неделю позже" in data_line:
             new_date = date + datetime.timedelta(weeks=1)
-            formatted_date = f"{new_date.year}-{new_date.month}-{new_date.day} {new_date.strftime('%H:%M:%S.%f')}".rstrip(
-                '0')
+            formatted_date = (
+                f"{new_date.year}-{new_date.month}-{new_date.day} "
+                f"{new_date.strftime('%H:%M:%S.%f')}".rstrip('0').rstrip('.')
+            )
+
             julis_file.write(formatted_date + "\n")
             print(formatted_date)
 
