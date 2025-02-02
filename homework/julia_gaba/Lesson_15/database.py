@@ -8,7 +8,7 @@ db = mysql.connect(
     database='st-onl'
 )
 
-cursor = db.cursor(buffered=True)
+cursor = db.cursor(dictionary=True)
 
 # Добавляем студента
 cursor.execute('''
@@ -20,7 +20,7 @@ db.commit()
 # Получаем ID студента
 cursor.execute(
     "SELECT id FROM students WHERE name = 'Misha' AND second_name = 'Rituzin'")
-my_student_id = cursor.fetchone()[0]
+my_student_id = cursor.fetchone()
 
 # Добавляем группу
 cursor.execute('''
@@ -31,7 +31,7 @@ db.commit()
 
 # Получаем ID группы
 cursor.execute("SELECT id FROM `groups` WHERE title = 'Desperate'")
-my_group_id = cursor.fetchone()[0]
+my_group_id = cursor.fetchone()
 
 # Обновляем группу студента
 cursor.execute(f'''
@@ -66,11 +66,13 @@ db.commit()
 
 # Получаем ID предметов
 cursor.execute("SELECT id FROM subjets WHERE title = 'Thai boxing'")
-thai_id = cursor.fetchone()[0]
+thai_id = cursor.fetchone()
+
 cursor.execute("SELECT id FROM subjets WHERE title = 'Running'")
-running_id = cursor.fetchone()[0]
+running_id = cursor.fetchone()
+
 cursor.execute("SELECT id FROM subjets WHERE title = 'Kiting'")
-kiting_id = cursor.fetchone()[0]
+kiting_id = cursor.fetchone()
 
 # Добавляем уроки
 lessons_data = [
@@ -89,7 +91,7 @@ db.commit()
 
 # Получаем ID уроков
 cursor.execute("SELECT id FROM lessons ORDER BY id DESC LIMIT 6")
-lesson_ids = [row[0] for row in cursor.fetchall()]
+lesson_ids = [row['id'] for row in cursor.fetchall()]
 
 # Добавляем оценки
 marks_data = [
@@ -109,13 +111,15 @@ db.commit()
 
 cursor.execute('''
     SELECT value FROM marks
-    WHERE student_id = %s''', (my_student_id,))
+    WHERE student_id = %s''',
+               (my_student_id,))
 result_marks = cursor.fetchall()
 print(result_marks)
 
 cursor.execute('''
     SELECT title FROM books
-    WHERE taken_by_student_id = %s''', (my_student_id,))
+    WHERE taken_by_student_id = %s''',
+               (my_student_id,))
 result_books = cursor.fetchall()
 print(result_books)
 
@@ -126,7 +130,8 @@ cursor.execute('''
     JOIN marks m ON st.id = m.student_id
     JOIN lessons l ON m.lesson_id = l.id  
     JOIN subjets sub ON l.subject_id = sub.id  
-    WHERE st.id = %s''', (my_student_id,))
+    WHERE st.id = %s''',
+               (my_student_id,))
 result_join = cursor.fetchall()
 print(result_join)
 
