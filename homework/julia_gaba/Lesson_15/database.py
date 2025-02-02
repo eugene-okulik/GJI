@@ -10,7 +10,7 @@ db = mysql.connect(
 
 cursor = db.cursor(buffered=True)
 
-# 1. Добавляем студента
+# Добавляем студента
 cursor.execute('''
     INSERT INTO students(name, second_name, group_id)
     VALUES('Misha', 'Rituzin', NULL)
@@ -18,7 +18,8 @@ cursor.execute('''
 db.commit()
 
 # Получаем ID студента
-cursor.execute("SELECT id FROM students WHERE name = 'Misha' AND second_name = 'Rituzin'")
+cursor.execute(
+    "SELECT id FROM students WHERE name = 'Misha' AND second_name = 'Rituzin'")
 my_student_id = cursor.fetchone()[0]
 
 # Добавляем группу
@@ -47,7 +48,7 @@ books_data = [
 cursor.executemany('''
     INSERT INTO books(title, taken_by_student_id)
     VALUES(%s, %s)''',
-    books_data)
+                   books_data)
 db.commit()
 
 # Добавляем предметы
@@ -60,7 +61,7 @@ subjects_data = [
 cursor.executemany('''
     INSERT INTO subjets (title)
     VALUES(%s)''',
-    subjects_data)
+                   subjects_data)
 db.commit()
 
 # Получаем ID предметов
@@ -83,7 +84,7 @@ lessons_data = [
 cursor.executemany('''
     INSERT INTO lessons(title, subject_id)
     VALUES(%s, %s)''',
-    lessons_data)
+                   lessons_data)
 db.commit()
 
 # Получаем ID уроков
@@ -103,7 +104,7 @@ marks_data = [
 cursor.executemany('''
     INSERT INTO marks(value, lesson_id, student_id)
     VALUES(%s, %s, %s)''',
-    marks_data)
+                   marks_data)
 db.commit()
 
 cursor.execute('''
