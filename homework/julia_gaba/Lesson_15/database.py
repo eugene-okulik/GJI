@@ -105,21 +105,18 @@ marks_data = [
 
 cursor.executemany('''
     INSERT INTO marks(value, lesson_id, student_id)
-    VALUES(%s, %s, %s)''',
-                   marks_data)
+    VALUES(%s, %s, %s)''', marks_data)
 db.commit()
 
 cursor.execute('''
     SELECT value FROM marks
-    WHERE student_id = %s''',
-               (my_student_id,))
+    WHERE student_id = %s''', (my_student_id,))
 result_marks = cursor.fetchall()
 print(result_marks)
 
 cursor.execute('''
     SELECT title FROM books
-    WHERE taken_by_student_id = %s''',
-               (my_student_id,))
+    WHERE taken_by_student_id = %s''', (my_student_id,))
 result_books = cursor.fetchall()
 print(result_books)
 
@@ -130,8 +127,7 @@ cursor.execute('''
     JOIN marks m ON st.id = m.student_id
     JOIN lessons l ON m.lesson_id = l.id  
     JOIN subjets sub ON l.subject_id = sub.id  
-    WHERE st.id = %s''',
-               (my_student_id,))
+    WHERE st.id = %s''', (my_student_id,))
 result_join = cursor.fetchall()
 print(result_join)
 
