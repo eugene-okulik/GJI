@@ -10,113 +10,119 @@ db = mysql.connect(
 
 cursor = db.cursor(dictionary=True)
 
-# Добавляем студента
-cursor.execute('''
-    INSERT INTO students(name, second_name, group_id)
-    VALUES('Misha', 'Rituzin', NULL)
-''')
-db.commit()
 
-# Получаем ID студента
+# Добавляем студента. Закомитить после правильного выполнения!
+# cursor.execute('''
+#     INSERT INTO students (name, second_name)
+#     VALUES (%s, %s)''', ('Lena', 'Popova'))
+# my_student_id = cursor.lastrowid
+# db.commit()
+# print(my_student_id)
+
+# Получаем моего студента (4264 Lena Popova)
+cursor.execute("SELECT * FROM students WHERE id = %s", (4264,))
+
+print(cursor.fetchone())
+
+
+# Добавляем группу. Закомитить после правильного выполнения!
+# cursor.execute('''
+#     INSERT INTO `groups` (title, start_date, end_date)
+#     VALUES (%s, %s, %s)''',('Desperate Housewives', 'Dec 2024', 'Dec 2025'))
+# my_group_id = cursor.lastrowid
+# db.commit()
+# print(my_group_id)
+
+
+# Получаем группу (2686 Desperate Housewives)
+cursor.execute("SELECT * FROM `groups` WHERE id = %s", (2686,))
+
+print(cursor.fetchone())
+
+# # Обновляем группу студента
 cursor.execute(
-    "SELECT id FROM students WHERE name = 'Misha' AND second_name = 'Rituzin'")
-my_student_id = cursor.fetchone()
-
-# Добавляем группу
-cursor.execute('''
-    INSERT INTO `groups` (title, start_date, end_date)
-    VALUES('Desperate', 'Dec 2024', 'March 2025')
-''')
+    "UPDATE students SET group_id = %s WHERE id = %s", (2686, 4264))
 db.commit()
 
-# Получаем ID группы
-cursor.execute("SELECT id FROM `groups` WHERE title = 'Desperate'")
-my_group_id = cursor.fetchone()
 
-# Обновляем группу студента
-cursor.execute(f'''
-    UPDATE students SET group_id = {my_group_id} WHERE id = {my_student_id}
-''')
-db.commit()
+# # Добавляем книги. Закомитить после правильного выполнения!
+# books_data = [
+#     ('Бедный богатый папа', 4264),
+#     ('Атомные привычки', 4264),
+#     ('Мой любимый Python', 4264)
+# ]
+# cursor.executemany('''
+#     INSERT INTO books (title, taken_by_student_id)
+#     VALUES(%s, %s)''',
+#                    books_data),
+# db.commit()
 
-# Добавляем книги
-books_data = [
-    ('Bim White and Black Ears', my_student_id),
-    ('The fried red tomato', my_student_id),
-    ('Python and Anaconda', my_student_id)
-]
-cursor.executemany('''
-    INSERT INTO books(title, taken_by_student_id)
-    VALUES(%s, %s)''',
-                   books_data)
-db.commit()
 
-# Добавляем предметы
-subjects_data = [
-    ('Thai boxing',),
-    ('Running',),
-    ('Kiting',)
-]
+# # Добавляем предметы. Закомитить после правильного выполнения!
+# subjects_data = [
+#     ('Вокал',),
+#     ('Барабаны',),
+#     ('Гитара',)
+# ]
+#
+# cursor.executemany('''
+#     INSERT INTO subjets (title)
+#     VALUES(%s)''',
+#                    subjects_data)
+# db.commit()
 
-cursor.executemany('''
-    INSERT INTO subjets (title)
-    VALUES(%s)''',
-                   subjects_data)
-db.commit()
+# # Получаем ID предметов (4289, 4290, 4291)
+cursor.execute("SELECT * FROM subjets ORDER BY id DESC LIMIT 3")
 
-# Получаем ID предметов
-cursor.execute("SELECT id FROM subjets WHERE title = 'Thai boxing'")
-thai_id = cursor.fetchone()
+print(cursor.fetchall())
 
-cursor.execute("SELECT id FROM subjets WHERE title = 'Running'")
-running_id = cursor.fetchone()
 
-cursor.execute("SELECT id FROM subjets WHERE title = 'Kiting'")
-kiting_id = cursor.fetchone()
-
-# Добавляем уроки
+# # Добавляем уроки. Закомитить после правильного выполнения!
 lessons_data = [
-    ('Thai boxing lesson 1', thai_id),
-    ('Thai boxing lesson 2', thai_id),
-    ('Running lesson 1', running_id),
-    ('Running lesson 2', running_id),
-    ('Kiting lesson 1', kiting_id),
-    ('Kiting lesson 2', kiting_id)
+    ('Вокал lesson 1', 4289),
+    ('Вокал lesson 2', 4289),
+    ('Барабаны lesson 1', 4290),
+    ('Барабаны lesson 2', 4290),
+    ('Гитара lesson 1', 4291),
+    ('Гитара lesson 2', 4291)
 ]
 cursor.executemany('''
-    INSERT INTO lessons(title, subject_id)
+    INSERT INTO lessons (title, subject_id)
     VALUES(%s, %s)''',
                    lessons_data)
 db.commit()
+lessons_first_id = cursor.lastrowid
 
-# Получаем ID уроков
-cursor.execute("SELECT id FROM lessons ORDER BY id DESC LIMIT 6")
-lesson_ids = [row['id'] for row in cursor.fetchall()]
+lessons_ids = list(range(lessons_first_id, lessons_first_id + len(lessons_data)))
+print(lessons_ids)
 
-# Добавляем оценки
-marks_data = [
-    ('5', lesson_ids[0], my_student_id),
-    ('5', lesson_ids[1], my_student_id),
-    ('5', lesson_ids[2], my_student_id),
-    ('5', lesson_ids[3], my_student_id),
-    ('5', lesson_ids[4], my_student_id),
-    ('5', lesson_ids[5], my_student_id)
-]
 
-cursor.executemany('''
-    INSERT INTO marks(value, lesson_id, student_id)
-    VALUES(%s, %s, %s)''', marks_data)
-db.commit()
+# Получаем ID уроков (7994-7999) Закомитить тоже
+cursor.execute(f"SELECT * FROM lessons WHERE id BETWEEN %s AND %s", (lessons_ids[0], lessons_ids[5]))
+
+print(cursor.fetchall())
+
+
+# Добавляем оценки. Закомитить после правильного выполнения!
+# marks_data = [
+#     ('5', lesson_id, 4264)
+#     for lesson_id in lessons_ids
+# ]
+#
+# cursor.executemany('''
+#     INSERT INTO marks(value, lesson_id, student_id)
+#     VALUES(%s, %s, %s)''', marks_data)
+# db.commit()
 
 cursor.execute('''
     SELECT value FROM marks
-    WHERE student_id = %s''', (my_student_id,))
+    WHERE student_id = %s''', (4264,))
 result_marks = cursor.fetchall()
 print(result_marks)
 
 cursor.execute('''
     SELECT title FROM books
-    WHERE taken_by_student_id = %s''', (my_student_id,))
+    WHERE taken_by_student_id = %s''', (4264,))
 result_books = cursor.fetchall()
 print(result_books)
 
@@ -127,7 +133,7 @@ cursor.execute('''
     JOIN marks m ON st.id = m.student_id
     JOIN lessons l ON m.lesson_id = l.id
     JOIN subjets sub ON l.subject_id = sub.id
-    WHERE st.id = %s''', (my_student_id,))
+    WHERE st.id = %s''', (4264,))
 result_join = cursor.fetchall()
 print(result_join)
 
