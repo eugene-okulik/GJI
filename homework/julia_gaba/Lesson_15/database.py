@@ -98,7 +98,7 @@ print(lessons_ids)
 
 
 # Получаем ID уроков (7994-7999) Закомитить тоже
-cursor.execute(f"SELECT * FROM lessons WHERE id BETWEEN %s AND %s",
+cursor.execute("SELECT * FROM lessons WHERE id BETWEEN %s AND %s",
                (lessons_ids[0], lessons_ids[5]))
 
 print(cursor.fetchall())
