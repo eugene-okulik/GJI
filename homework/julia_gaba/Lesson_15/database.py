@@ -26,7 +26,7 @@ print(cursor.fetchone())
 # Добавляем группу
 cursor.execute('''
     INSERT INTO `groups` (title, start_date, end_date)
-    VALUES (%s, %s, %s)''',('Desperate Housewives', 'Dec 2024', 'Dec 2025'))
+    VALUES (%s, %s, %s)''', ('Desperate Housewives', 'Dec 2024', 'Dec 2025'))
 my_group = cursor.lastrowid
 db.commit()
 print(my_group)
@@ -78,14 +78,11 @@ sub3 = cursor.lastrowid
 db.commit()
 
 # Получаем ID предметов
-cursor.execute("SELECT id FROM subjets "
-               "WHERE id = %s", (sub1,))
+cursor.execute("SELECT id FROM subjets WHERE id = %s", (sub1,))
 print(cursor.fetchone())
-cursor.execute("SELECT id FROM subjets "
-               "WHERE id = %s", (sub2,))
+cursor.execute("SELECT id FROM subjets WHERE id = %s", (sub2,))
 print(cursor.fetchone())
-cursor.execute("SELECT id FROM subjets "
-               "WHERE id = %s", (sub3,))
+cursor.execute("SELECT id FROM subjets WHERE id = %s", (sub3,))
 print(cursor.fetchone())
 
 
@@ -119,8 +116,7 @@ print(cursor.fetchall())
 
 # Добавляем оценки
 marks_data = [
-    ('5', lesson_id, my_student)
-    for lesson_id in lessons_ids
+    ('5', lesson_id, my_student) for lesson_id in lessons_ids
 ]
 
 cursor.executemany('''
