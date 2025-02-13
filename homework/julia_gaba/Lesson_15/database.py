@@ -14,16 +14,14 @@ cursor = db.cursor(dictionary=True)
 # Добавляем студента
 cursor.execute('''
     INSERT INTO students (name, second_name)
-    VALUES (%s, %s)''', ('Lena', 'Popova'))
+    VALUES (%s, %s)''', ('Bett', 'Right'))
 my_student = cursor.lastrowid
 db.commit()
 print(my_student)
 
 # Получаем моего студента
 cursor.execute("SELECT * FROM students WHERE id = %s", (my_student,))
-
 print(cursor.fetchone())
-
 
 # Добавляем группу
 cursor.execute('''
@@ -33,10 +31,8 @@ my_group = cursor.lastrowid
 db.commit()
 print(my_group)
 
-
 # Получаем группу
 cursor.execute("SELECT * FROM `groups` WHERE id = %s", (my_group,))
-
 print(cursor.fetchone())
 
 # Обновляем группу студента
@@ -46,9 +42,9 @@ db.commit()
 
 # Добавляем книги
 books_data = [
-    ('Бедный богатый папа', my_student),
-    ('Атомные привычки', my_student),
-    ('Мой любимый Python', my_student)
+    ('Думай медленно, решай быстро', my_student),
+    ('Грокаем алгоритмы 2', my_student),
+    ('Наш любимый Python', my_student)
 ]
 cursor.executemany('''
     INSERT INTO books (title, taken_by_student_id)
@@ -64,27 +60,43 @@ subjects_data = [
     ('Гитара',)
 ]
 
-cursor.executemany('''
+cursor.execute('''
     INSERT INTO subjets (title)
-    VALUES(%s)''',
-                   subjects_data)
+    VALUES(%s)''', subjects_data[0])
+sub1 = cursor.lastrowid
+
+cursor.execute('''
+    INSERT INTO subjets (title)
+    VALUES(%s)''', subjects_data[1])
+sub2 = cursor.lastrowid
+
+cursor.execute('''
+    INSERT INTO subjets (title)
+    VALUES(%s)''', subjects_data[2])
+sub3 = cursor.lastrowid
+
 db.commit()
 
 # Получаем ID предметов
-cursor.execute("SELECT id FROM subjets ORDER BY id DESC LIMIT 3")
-subject_ids = [row['id'] for row in cursor.fetchall()]
-
-print(cursor.fetchall())
+cursor.execute("SELECT id FROM subjets "
+               "WHERE id = %s", (sub1,))
+print(cursor.fetchone())
+cursor.execute("SELECT id FROM subjets "
+               "WHERE id = %s", (sub2,))
+print(cursor.fetchone())
+cursor.execute("SELECT id FROM subjets "
+               "WHERE id = %s", (sub3,))
+print(cursor.fetchone())
 
 
 # Добавляем уроки
 lessons_data = [
-    ('Вокал lesson 1', subject_ids[0]),
-    ('Вокал lesson 2', subject_ids[0]),
-    ('Барабаны lesson 1', subject_ids[1]),
-    ('Барабаны lesson 2', subject_ids[1]),
-    ('Гитара lesson 1', subject_ids[2]),
-    ('Гитара lesson 2', subject_ids[2])
+    ('Вокал lesson 1', sub1),
+    ('Вокал lesson 2', sub1),
+    ('Барабаны lesson 1', sub2),
+    ('Барабаны lesson 2', sub2),
+    ('Гитара lesson 1', sub3),
+    ('Гитара lesson 2', sub3)
 ]
 cursor.executemany('''
     INSERT INTO lessons (title, subject_id)
@@ -93,7 +105,8 @@ cursor.executemany('''
 db.commit()
 lessons_first_id = cursor.lastrowid
 
-lessons_ids = list(range(lessons_first_id, lessons_first_id + len(lessons_data)))
+lessons_ids = list(range(lessons_first_id,
+                         lessons_first_id + len(lessons_data)))
 print(lessons_ids)
 
 
